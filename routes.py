@@ -1,4 +1,6 @@
 from random import randint as randInt
+from time import sleep
+import copy
 
 class station:
     def __init__(self, id, name, isInterchange, prevStation, nextStation, maxCapacity, line, line2=None):
@@ -21,7 +23,8 @@ class Train:
         self.id = id
         self.line = line
         self.currentStation = currentStation
-        self.passengers = 0
+        self.passengerCount = 0
+        self.passengers = []
         self.maxPassengers = 750
 
     def __str__(self):
@@ -33,6 +36,8 @@ class passenger:
         self.source = source
         self.destination = destination
 
+    def isValidRoute(self, stations, platform=1):
+
     def __str__(self):
         return f"Passenger {self.id} from {self.source.name} to {self.destination.name}"
     
@@ -40,13 +45,13 @@ class line:
     def __init__(self, name, stations):
         self.name = name
         self.stations = stations
-        self.trains = [Train(x, "purple", stations[0]) for x in range(1, 10)]
+        self.trains = [Train(x, "purple", stations[0]) for x in range(1, 15)]
 
     def initPassengers(self):
         id = 0
         for station in self.stations:
             station.passengers = []
-            for _ in range(1, randInt(2, 3)):
+            for _ in range(1, randInt(2, 109)):
                 destination = station
                 while destination == station:
                     destination = self.stations[randInt(0, len(self.stations)-1)]
@@ -87,6 +92,53 @@ purpleLine.initPassengers()
 
 for station in purpleLineStations:
     print(station)
+
+
+def loop():
+    for train in purpleLine.trains:
+        train.passengerCount = 0
+        train.passengers = []
+        for i in range(len(purpleLine.stations)):
+            print(f"Train Arrived at {train.currentStation.name}...")
+            sleep(1)
+            
+            # Deboarding
+            deboarded_passengers = [p for p in train.passengers if p.destination == train.currentStation]
+            train.passengers = [p for p in train.passengers if p.destination != train.currentStation]
+            print(f"{len(deboarded_passengers)} passengers deboarded at {train.currentStation.name}.")
+            sleep(1)
+            
+            # Boarding
+            print(f"Station has {len(train.currentStation.passengers)} passengers...")
+            sleep(1)
+            passengers_to_board = train.currentStation.passengers
+            space_left = train.maxPassengers - len(train.passengers)
+            passengers_boarding = passengers_to_board[:space_left]  # Prevent overfilling
+
+            print(f"{len(passengers_boarding)} passengers board the train...")
+            sleep(1)
+            train.passengers.extend(passengers_boarding)  # Properly flatten the list
+            train.passengerCount = len(train.passengers)
+            train.currentStation.passengers = []  # Clear station's passengers after boarding
+            
+            print(f"Train {train.id} is at {train.currentStation.name} with {train.passengerCount} passengers.")
+            sleep(1)
+            train.currentStation.hasTrain = True
+            sleep(4)
+            print(f"Train leaving {train.currentStation.name}...")
+            train.currentStation.hasTrain = False
+            
+            # Move to next station
+            train.currentStation = train.currentStation.nextStation if train.currentStation.nextStation else purpleLine.stations[0]
+            sleep(4)
+    
+
+def main():
+    while(True):
+        loop()
+        sleep(1)
+
+main()
 
 
 # TODO:

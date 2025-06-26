@@ -1,0 +1,108 @@
+[
+    {
+        "label": "randint",
+        "importPath": "random",
+        "description": "random",
+        "isExtraImport": true,
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "sleep",
+        "importPath": "time",
+        "description": "time",
+        "isExtraImport": true,
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "copy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "copy",
+        "description": "copy",
+        "detail": "copy",
+        "documentation": {}
+    },
+    {
+        "label": "station",
+        "kind": 6,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "class station:\n    def __init__(self, id, name, isInterchange, prevStation, nextStation, maxCapacity, line, line2=None):\n        self.id = id\n        self.name = name\n        self.isInterchange = isInterchange;\n        self.prevStation = prevStation\n        self.nextStation = nextStation\n        self.distanceFromPrev = 0\n        self.maxCapacity = maxCapacity;\n        self.line = [line, line2]",
+        "detail": "routes",
+        "documentation": {}
+    },
+    {
+        "label": "Train",
+        "kind": 6,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "class Train:\n    def __init__(self, id, line, currentStation):\n        self.id = id\n        self.line = line\n        self.currentStation = currentStation\n        self.passengerCount = 0\n        self.passengers = []\n        self.maxPassengers = 750\n    def __str__(self):\n        return f\"Train {self.id} on {self.line.name} Line at {self.currentStation.name} with {self.passengers} passengers.\"",
+        "detail": "routes",
+        "documentation": {}
+    },
+    {
+        "label": "passenger",
+        "kind": 6,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "class passenger:\n    def __init__(self, id, source, destination):\n        self.id = id\n        self.source = source\n        self.destination = destination\n    def isValidRoute(self, stations, platform=1):\n    def __str__(self):\n        return f\"Passenger {self.id} from {self.source.name} to {self.destination.name}\"\nclass line:\n    def __init__(self, name, stations):",
+        "detail": "routes",
+        "documentation": {}
+    },
+    {
+        "label": "line",
+        "kind": 6,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "class line:\n    def __init__(self, name, stations):\n        self.name = name\n        self.stations = stations\n        self.trains = [Train(x, \"purple\", stations[0]) for x in range(1, 15)]\n    def initPassengers(self):\n        id = 0\n        for station in self.stations:\n            station.passengers = []\n            for _ in range(1, randInt(2, 109)):",
+        "detail": "routes",
+        "documentation": {}
+    },
+    {
+        "label": "loop",
+        "kind": 2,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "def loop():\n    for train in purpleLine.trains:\n        train.passengerCount = 0\n        train.passengers = []\n        for i in range(len(purpleLine.stations)):\n            print(f\"Train Arrived at {train.currentStation.name}...\")\n            sleep(1)\n            # Deboarding\n            deboarded_passengers = [p for p in train.passengers if p.destination == train.currentStation]\n            train.passengers = [p for p in train.passengers if p.destination != train.currentStation]",
+        "detail": "routes",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "def main():\n    while(True):\n        loop()\n        sleep(1)\nmain()\n# TODO:\n# 1. Create a trains and make them travel\n# 2. Create platforms and some trains go forward and some reverse.\n# 3. Passengers going reverse will take reverse platform and forward take forward platform\n# 4. Ticketing System - revenue generation",
+        "detail": "routes",
+        "documentation": {}
+    },
+    {
+        "label": "purpleLineNames",
+        "kind": 5,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "purpleLineNames = [\n    \"Whitefield (Kadugodi)\", \"Hopefarm Channasandra\", \"Kadogodi Tree Park\", \n    \"Patthanur Aghara\", \"Sri Satya Sai Hostpital\", \"Nallurhalli\", \"Kundanhalli\", \n    \"Seetharampalaya\", \"Hoodi\", \"Garudachapalya\", \"Singayyapalya\", \"K R Pura\", \n    \"Benniganahalli\", \"Bayappanhalli\", \"Swami Vivekanandha Road\", \"Indiranagara\", \n    \"Halasuru\", \"Trinity\", \"Mahathma Gandhi Road\", \"Cubbon Park\", \n    \"Dr. B.R. Ambedkar Station, Vidhana Soudha\", \"Sir M. Visvesvaraya Station, Central College\", \n    \"Nadaprabhu Kempegowda Station, Majestic\", \"Krantivira Sangolli Rayanna Railway Station\", \n    \"Magadi Road\", \"Sri Balagangadharanatha Swamiji Station, Hosahalli\", \"Vijayanagara\", \n    \"Attiguppe\", \"Deepanjali Nagar\", \"Mysuru Road\", \"Pantharapalya - Nayandahalli\", ",
+        "detail": "routes",
+        "documentation": {}
+    },
+    {
+        "label": "purpleLineStations",
+        "kind": 5,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "purpleLineStations = []\nfor i in range(len(purpleLineNames)):\n    purpleLineStations.append(station(i, purpleLineNames[i], False, None, None, 1000, \"Purple\", None))\nfor i in range(len(purpleLineStations)):\n    if i > 0:\n        purpleLineStations[i].prevStation = purpleLineStations[i-1]\n    if i < len(purpleLineStations) - 1:\n        purpleLineStations[i].nextStation = purpleLineStations[i+1]\npurpleLine = line(\"Purple\", purpleLineStations)\npurpleLine.initPassengers()",
+        "detail": "routes",
+        "documentation": {}
+    },
+    {
+        "label": "purpleLine",
+        "kind": 5,
+        "importPath": "routes",
+        "description": "routes",
+        "peekOfCode": "purpleLine = line(\"Purple\", purpleLineStations)\npurpleLine.initPassengers()\nfor station in purpleLineStations:\n    print(station)\ndef loop():\n    for train in purpleLine.trains:\n        train.passengerCount = 0\n        train.passengers = []\n        for i in range(len(purpleLine.stations)):\n            print(f\"Train Arrived at {train.currentStation.name}...\")",
+        "detail": "routes",
+        "documentation": {}
+    }
+]
